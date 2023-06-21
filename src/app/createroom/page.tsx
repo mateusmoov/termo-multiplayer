@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3030");
 
 const CreateRoom = () => {
+	const router = useRouter();
 	const handleCreateRoom = () => {
 		const payload = {
 			username: "Moov",
@@ -13,7 +15,7 @@ const CreateRoom = () => {
 	};
 
 	socket.on("new room", (data) => {
-		console.log(data);
+		router.push(`/room/${data.roomID}`);
 	});
 
 	return (
