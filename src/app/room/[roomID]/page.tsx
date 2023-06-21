@@ -48,7 +48,7 @@ const room = ({ params }: ParamsProps) => {
 				</div>
 				<div className="flex justify-center items-center flex-col mt-4">
 					<p>Código da sala</p>
-					<h1>{params.roomID}</h1>
+					<h1>#{params.roomID}</h1>
 				</div>
 			</div>
 		</div>
