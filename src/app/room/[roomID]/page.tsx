@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {TermoSquare} from '@/app/components'
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3030");
 
@@ -39,11 +40,11 @@ const room = ({ params }: ParamsProps) => {
 						<p>Jogador 1</p>
 						<span>{players[0]?.username}</span>
 					</div>
-					<div className="w-[449px] h-[479px] bg-blue-700"></div>
+					<TermoSquare />
 					<div className="text-center">
 						<p>Jogador 2</p>
 						<span>{players[1]?.username}</span>
-					</div>
+					TermoSquare</div>
 				</div>
 				<div className="flex justify-center items-center flex-col mt-4">
 					<p>Código da sala</p>

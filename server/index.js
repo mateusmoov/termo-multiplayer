@@ -14,7 +14,7 @@ const users = []
 
 io.on("connection", (socket) => {
 
-// User creating a room
+// User creating in a room
  socket.on('create new room', (userInfo) => {
   const uid = generateUID(5)
   socket.join(uid);
@@ -31,7 +31,15 @@ io.on("connection", (socket) => {
   io.to(uid).emit('users update', users)
  })
 
-// User joining a room
+ // First user joining in a room 
+ socket.on("join first room", (roomID) => {
+  socket.join(roomID);
+  const usersInRoom = users.filter((user) => user.roomID === roomID);
+  io.to(roomID).emit("users update", usersInRoom);
+ });
+});
+
+// User joining in a room
  socket.on('join room', (data) => {
    const usersInRoom = users.filter((user) => user.roomID === data.roomID);
    if(usersInRoom.length >= 2) throw new Error('Limite de usuários atingido');
@@ -47,17 +55,46 @@ io.on("connection", (socket) => {
     io.to(data.roomID).emit('users update', usersInRoom);
  })
 
+ const PORT = process.env.PORT || 3030;
+ 
+ httpServer.listen(PORT, () =>
+  console.log(`server listening at http://localhost:${PORT}`)
+ );
 
- socket.on("join first room", (roomID) => {
-  socket.join(roomID);
-  const usersInRoom = users.filter((user) => user.roomID === roomID);
-  io.to(roomID).emit("users update", usersInRoom);
- });
+
+
+let userTry = [
+  {
+    word: "p",
+    status: undefined,
+  },
+  {
+    word: "a",
+    status: undefined,
+  },
+  {
+    word: "n",
+    status: undefined,
+  },
+  {
+    word: "d",
+    status: undefined,
+  },
+  {
+    word: "a",
+    status: undefined,
+  },
+];
+
+const rightAnswer = ["p", "a", "p", "a", "i"];
+
+const result = userTry.map((item, index) => {
+  if (item.word === rightAnswer[index]) {
+    item.status = "match!";
+  } else if (rightAnswer.includes(item.word)) {
+    item.status = "wrong place";
+  } else {
+    item.status = "not found";
+  }
+  return item;
 });
-
-
-const PORT = process.env.PORT || 3030;
-
-httpServer.listen(PORT, () =>
- console.log(`server listening at http://localhost:${PORT}`)
-);
