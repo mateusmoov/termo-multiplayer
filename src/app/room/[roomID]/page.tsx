@@ -17,13 +17,12 @@ interface PlayerProps {
 }
 
 const room = ({ params }: ParamsProps) => {
-	const [player1, setPlayer1] = useState<PlayerProps>();
+	const [players, setPlayers] = useState<PlayerProps[]>([]);
 
 	useEffect(() => {
-		socket.emit("join room", params.roomID);
-
+		socket.emit("join first room", params.roomID);
 		socket.on("users update", (users) => {
-			setPlayer1(users[0]);
+			setPlayers(users)
 		});
 	}, [params.roomID]);
 
@@ -38,17 +37,17 @@ const room = ({ params }: ParamsProps) => {
 				<div className="flex items-center gap-x-6">
 					<div className="text-center">
 						<p>Jogador 1</p>
-						<span>{player1?.username}</span>
+						<span>{players[0]?.username}</span>
 					</div>
 					<div className="w-[449px] h-[479px] bg-blue-700"></div>
 					<div className="text-center">
 						<p>Jogador 2</p>
-						<span>Nome do Jogador 2</span>
+						<span>{players[1]?.username}</span>
 					</div>
 				</div>
 				<div className="flex justify-center items-center flex-col mt-4">
 					<p>Código da sala</p>
-					<h1>#{params.roomID}</h1>
+					<h1>#{params.roomID.toUpperCase()}</h1>
 				</div>
 			</div>
 		</div>
